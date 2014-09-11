@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CodeEditText">
+        <attr name="CodeEditText" format="reference"/>
+        <attr name="maxGroup" format="reference|integer" />
+        <attr name="maxContinuousNumbers" format="reference|integer" />
+    </declare-styleable>
+</resources>

@@ -4,16 +4,23 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 import com.yj.views.CodeEditText;
 
 
-public class Main extends ActionBarActivity {
+public class Main extends ActionBarActivity implements View.OnClickListener {
+
+    private CodeEditText codeEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        codeEditText = (CodeEditText) findViewById(R.id.edit);
+        findViewById(R.id.btn1).setOnClickListener(this);
+        findViewById(R.id.btn2).setOnClickListener(this);
     }
 
 
@@ -34,5 +41,19 @@ public class Main extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private int randomNumber;
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn1) {
+            codeEditText.addNumber(randomNumber++ % 10);
+        } else if (view.getId() == R.id.btn2) {
+            codeEditText.deleteNumber();
+        }
+
+
     }
 }

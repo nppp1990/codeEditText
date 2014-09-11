@@ -1,6 +1,7 @@
 package com.yj.views;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -10,26 +11,30 @@ import android.widget.EditText;
  * Created by yj1990 on 14-9-11.
  */
 public class CodeEditText extends EditText {
-    private static final int N = 4;
-    private int maxContinuousNumbers = N;
-    private int maxNum = N * 3 + 2;
+    private int maxContinuousNumbers;
+    private int maxGroup;
+
 
     public CodeEditText(Context context) {
         super(context);
-        init();
+        init(context, null, R.attr.CodeEditText);
     }
 
     public CodeEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context, attrs, R.attr.CodeEditText);
     }
 
     public CodeEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context, attrs, R.attr.CodeEditText);
     }
 
-    private void init() {
+    private void init(Context context, AttributeSet attrs, int defStyle) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CodeEditText,
+                defStyle, 0);
+        maxContinuousNumbers = typedArray.getInteger(R.styleable.CodeEditText_maxContinuousNumbers, 4);
+        maxGroup = typedArray.getColor(R.styleable.CodeEditText_maxGroup, 3);
         addTextChangedListener(new TextWatcher() {
             private String last;
 
@@ -40,7 +45,7 @@ public class CodeEditText extends EditText {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > maxNum) {
+                if (s.length() > (maxContinuousNumbers * maxGroup + maxGroup - 1)) {
                     setText(last);
                     setSelection(start);
                     return;
@@ -60,6 +65,7 @@ public class CodeEditText extends EditText {
 
             }
         });
+        typedArray.recycle();
     }
 
     public void deleteNumber() {
@@ -91,7 +97,7 @@ public class CodeEditText extends EditText {
 
         String newString = origin.substring(0, start) + String.valueOf(c) + origin.substring(start, origin.length());
         String realNumber = getRealNumber(newString);
-        if (realNumber.length() > maxNum) {
+        if (realNumber.length() > (maxContinuousNumbers * maxGroup)) {
             return;
         }
         String showText = getShowText(realNumber);
@@ -170,15 +176,7 @@ public class CodeEditText extends EditText {
         return maxContinuousNumbers;
     }
 
-    public void setMaxContinuousNumbers(int maxContinuousNumbers) {
-        this.maxContinuousNumbers = maxContinuousNumbers;
-    }
-
-    public int getMaxNum() {
-        return maxNum;
-    }
-
-    public void setMaxNum(int maxNum) {
-        this.maxNum = maxNum;
+    public int getMaxGroup() {
+        return maxGroup;
     }
 }
