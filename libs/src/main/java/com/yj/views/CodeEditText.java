@@ -45,7 +45,7 @@ public class CodeEditText extends EditText {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > (maxContinuousNumbers * maxGroup + maxGroup - 1)) {
+                if (getRealNumber(s.toString()).length() > (maxContinuousNumbers * maxGroup)) {
                     setText(last);
                     setSelection(start);
                     return;
